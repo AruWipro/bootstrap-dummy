@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Banking Website</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+
+<body>
+    <!-- Navigation Bar -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="#">Banking</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" href="#">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">About</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Services</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Contact</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="bg-primary text-white text-center py-5">
+        <div class="container">
+            <h1 class="display-4">Welcome to Our Bank</h1>
+            <p class="lead">Your trusted partner in financial growth.</p>
+            <a href="#" class="btn btn-light btn-lg">Learn More</a>
+        </div>
+    </section>
+
+    <!-- Services Section -->
+    <section class="py-5">
+        <div class="container">
+            <h2 class="text-center mb-4">Our Services</h2>
+            <div class="row">
+                <div class="col-md-4 text-center">
+                    <h3>Savings Accounts</h3>
+                    <p>Secure and flexible savings options.</p>
+                </div>
+                <div class="col-md-4 text-center">
+                    <h3>Loans</h3>
+                    <p>Personal, home, and business loans.</p>
+                </div>
+                <div class="col-md-4 text-center">
+                    <h3>Investments</h3>
+                    <p>Grow your wealth with our investment plans.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-dark text-white text-center py-3">
+        <div class="container">
+            <p>&copy; 2023 Banking. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script src="https://apps.mec1.pure.cloud/genesys-bootstrap/cobrowse.min.js" async></script>
+
+    <script>
+        if (!window._genesys) window._genesys = {};
+        if (!window._gt) window._gt = [];
+
+        window._genesys.widgets = {
+            main: {},
+            webchat: {
+                transport: {
+                    type: "purecloud-v2-sockets",
+                    dataURL: "https://apps.mec1.pure.cloud",
+                    deploymentKey: "d6d69019-4fda-438a-a40c-ecb6b983df82",
+                    orgGuid: "0e0cf33e-bc71-4644-b318-3a00d283e396",  // Updated Org ID
+                }
+            },
+            cobrowse: {
+                enabled: true,
+                maskAllInputs: true, // Mask sensitive inputs
+                dataURL: "https://apps.mec1.pure.cloud"
+            },
+            gwe: {}
+        };
+
+        // Load Genesys Script
+        (function (g, e, n, es, ys) {
+            g['_genesysJs'] = e;
+            g[e] = g[e] || function () {
+                (g[e].q = g[e].q || []).push(arguments);
+            };
+            g[e].t = 1 * new Date();
+            g[e].c = es;
+            ys = document.createElement('script'); 
+            ys.async = 1; 
+            ys.src = n; 
+            ys.charset = 'utf-8'; 
+            document.head.appendChild(ys);
+        })(window, 'Genesys', 'https://apps.mec1.pure.cloud/genesys-bootstrap/genesys.min.js', {
+            environment: 'prod-mec1',
+            deploymentId: 'd6d69019-4fda-438a-a40c-ecb6b983df82'
+        });
+
+      
+    </script>
+      
+    <!-- Bootstrap JS and dependencies -->
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js"></script>
+    
+</body>
+</html>
