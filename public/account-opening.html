@@ -50,7 +50,7 @@
             </div>
             <button type="button" class="btn btn-primary" onclick="nextStep(2)">Next</button>
           </div>
-
+        
           <div class="form-step" id="step-2" style="display: none;">
             <h4>Step 2: Account Details</h4>
             <div class="mb-3">
@@ -60,10 +60,15 @@
                 <option value="current">Current</option>
               </select>
             </div>
+            <div class="mb-3">
+              <label for="salary" class="form-label">Salary</label>
+              <input type="number" class="form-control" id="salary" required>
+            </div>
             <button type="button" class="btn btn-secondary" onclick="prevStep(1)">Previous</button>
             <button type="submit" class="btn btn-success">Submit</button>
           </div>
         </form>
+        
       </div>
     </section>
   </main>
@@ -80,8 +85,48 @@
     (a[o].q=a[o].q||[]).push(arguments)},a[o].l=1*new Date();u=t.createElement(c),
     d=t.getElementsByTagName(c)[0];u.async=1;u.src=l;u.charset='utf-8';d.parentNode.insertBefore(u,d)
     })(window, document, 'script', 'https://apps.mec1.pure.cloud/journey/sdk/js/web/v1/ac.js', 'ac');
-    ac('init', '0e0cf33e-bc71-4644-b318-3a00d283e396', { region: 'mec1' });
+    ac('init', '0e0cf33e-bc71-4644-b318-3a00d283e396', { 
+      region: 'mec1',
+      traitsMapper: {
+        name: 'Aravind P',
+        email: 'aravindp@emiratesnbd.com'
+      } 
+    });
+    
     ac('pageview');
+    ac('dom', 'ready', function (){
+      console.log('The journey SDK is ready!');
+    });
+
+    (function (g, e, n, es, ys) {
+      g['_genesysJs'] = e;
+      g[e] = g[e] || function () {
+        (g[e].q = g[e].q || []).push(arguments);
+      };
+      g[e].t = 1 * new Date();
+      g[e].c = es;
+      ys = document.createElement('script');
+      ys.async = 1;
+      ys.src = n;
+      ys.charset = 'utf-8';
+      document.head.appendChild(ys);
+    })(window, 'Genesys', 'https://apps.mec1.pure.cloud/genesys-bootstrap/genesys.min.js', {
+      environment: 'prod-mec1',
+      deploymentId: 'd6d69019-4fda-438a-a40c-ecb6b983df82'
+    });
+
+    Genesys("subscribe", "Journey.ready", function() {
+      // track forms
+      Genesys("command", "Journey.formsTrack", {});
+    
+      // track user inactivity
+      Genesys("command", "Journey.trackIdleEvents", { idleEvents: [{ idleAfterSeconds: 5, eventName: "idle_5_sec" }] });
+    
+      // track scroll depth
+      Genesys("command", "Journey.trackScrollDepth", { scrollDepthEvents: [{ percentage: 50, eventName: "scrolled_50_percent" }] });
+    });
+    
+
   </script>
 
   <script>
@@ -96,16 +141,10 @@
 
     if (!window._genesys) window._genesys = {};
     if (!window._gt) window._gt = [];
-    if(!window.Journey) window.Journey = {
-      record: function(event) {
-        window._gt.push(['invoke', 'sendEvent', {
-          eventName: event.event
-        }]);
-      }
-    };
+    
    
 
-    window._genesys.widgets = {
+     window._genesys.widgets = {
       main: {},
       webchat: {
         transport: {
@@ -124,23 +163,11 @@
     };
 
     // Load Genesys Script
-    (function (g, e, n, es, ys) {
-      g['_genesysJs'] = e;
-      g[e] = g[e] || function () {
-        (g[e].q = g[e].q || []).push(arguments);
-      };
-      g[e].t = 1 * new Date();
-      g[e].c = es;
-      ys = document.createElement('script');
-      ys.async = 1;
-      ys.src = n;
-      ys.charset = 'utf-8';
-      document.head.appendChild(ys);
-    })(window, 'Genesys', 'https://apps.mec1.pure.cloud/genesys-bootstrap/genesys.min.js', {
-      environment: 'prod-mec1',
-      deploymentId: 'd6d69019-4fda-438a-a40c-ecb6b983df82'
-    });
+   
 
+    Genesys("subscribe", "Launcher.ready" , function(o){
+      console.log("The queue works!");
+    });
     // Track form interaction & inactivity
     document.addEventListener("DOMContentLoaded", function () {
       let emailField = document.getElementById("email");
@@ -158,28 +185,34 @@
           window._gt.push(['invoke', 'sendEvent', {
             eventName: "email_idle"
           }]);
+          Genesys("command", "Journey.record", { 
+            eventName: "email_idle", 
+            data: { message: "Email field is idle" } 
+          });
 
-          // Explicitly record the journey after sending the event
-          if (window.Journey) {
-            Journey.record({ event: "email_idle" });
-          }
+          
+          
         }
       }
 
       function sendFocusEvent() {
        
-        logEvent("email_focus_duration!!!");
         if (window._gt) {
-          logEvent("email_focus_duration2!!!");
           window._gt.push(['invoke', 'sendEvent', {
             eventName: "email_focus_duration"
           }]);
-
+          logEvent("email_focus_duration");
+          console.log(typeof ac !== "undefined" ? ac('setDebug', true) : "AC is NOT loaded");
           // Explicitly record the journey after sending the event
-          if (window.Journey) {
-            logEvent("email_focus_duration");
-            Journey.record({ event: "email_focus_duration" });
-          }
+          ac('record', {
+            eventName: "email_focus_duration",
+            attributes: {
+                emailEntered: false,
+                message: "User has not entered an email for 10 seconds"
+            }
+        });
+        Genesys("command", "Journey.record", {eventName: "email_focus_duration"}, function(o){console.log('Event Published!!')}, function(o){console.log('Cant publish event')});
+        
         }
       }
 
